@@ -1,0 +1,16 @@
+.apply-page { display: flex; flex-direction: column; gap: 1.5rem; }
+.apply-page__title { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.apply-page__subtitle { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
+
+.apply-page__types { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+
+.loan-type-card {
+  background: var(--bg-primary); border: 2px solid var(--border-color); border-radius: 1rem;
+  padding: 1.25rem; cursor: pointer; transition: all 0.25s ease; text-align: center;
+}
+.loan-type-card:hover { border-color: var(--primary-light); box-shadow: 0 4px 16px rgba(59, 91, 219, 0.08); }
+.loan-type-card--selected { border-color: var(--primary); background: rgba(59, 91, 219, 0.04); box-shadow: 0 4px 16px rgba(59, 91, 219, 0.12); }
+.loan-type-card__label { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem; }
+.loan-type-card__detail { font-size: 0.8rem; color: var(--text-muted); margin: 0.15rem 0; }
+
+.apply-page__form { display: flex; flex-direction: column; gap: 1.15rem; margin-top: 0.5rem; }

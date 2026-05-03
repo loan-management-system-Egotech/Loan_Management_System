@@ -1,0 +1,39 @@
+.admin-dash { display: flex; flex-direction: column; gap: 2rem; }
+
+/* Stats Grid */
+.admin-dash__stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; }
+
+.stat-card {
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--bg-primary); border: 1px solid var(--border-color);
+  border-radius: 1rem; padding: 1.25rem 1.5rem; transition: all 0.3s ease;
+}
+.stat-card:hover { border-color: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06); }
+
+.stat-card__icon { width: 48px; height: 48px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.stat-card__info { display: flex; flex-direction: column; flex: 1; }
+.stat-card__label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+.stat-card__value { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+.stat-card__change { font-size: 0.78rem; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 0.4rem; }
+.stat-card__change--up { color: #0ca678; background: rgba(12, 166, 120, 0.08); }
+.stat-card__change--down { color: #e03131; background: rgba(224, 49, 49, 0.08); }
+
+/* Table */
+.admin-dash__table-wrap { overflow-x: auto; margin-top: 0.5rem; }
+.admin-dash__table { width: 100%; border-collapse: collapse; }
+.admin-dash__table th { text-align: left; padding: 0.75rem 1rem; font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border-color); }
+.admin-dash__table td { padding: 0.85rem 1rem; font-size: 0.88rem; color: var(--text-secondary); border-bottom: 1px solid var(--border-light); }
+.admin-dash__table tr:hover td { background: var(--bg-hover); }
+.admin-dash__loan-id { font-weight: 600; color: var(--primary); }
+.admin-dash__amount { font-weight: 600; color: var(--text-primary); }
+.admin-dash__date { color: var(--text-muted); }
+
+/* Status Badges */
+.status-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+.status-badge--active    { color: #0ca678; background: rgba(12, 166, 120, 0.08); }
+.status-badge--pending   { color: #f59f00; background: rgba(245, 159, 0, 0.08); }
+.status-badge--closed    { color: #868e96; background: rgba(134, 142, 150, 0.08); }
+.status-badge--overdue   { color: #e03131; background: rgba(224, 49, 49, 0.08); }
+.status-badge--completed { color: #0ca678; background: rgba(12, 166, 120, 0.08); }
+.status-badge--failed    { color: #e03131; background: rgba(224, 49, 49, 0.08); }
+.status-badge--suspended { color: #e8590c; background: rgba(232, 89, 12, 0.08); }

@@ -1,0 +1,39 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151; /* Dark gray for readability */
+  margin-bottom: 0.5rem;
+}
+
+.required-star {
+  color: #ef4444; /* Subtle red for required fields */
+}
+
+.loanpro-input {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: #1f2937;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db; /* Light gray border */
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+/* The blue focus state from your Figma */
+.loanpro-input:focus {
+  border-color: #3b5bdb; /* Primary Brand Blue */
+  box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.15); /* Soft blue glow */
+}
+
+.loanpro-input::placeholder {
+  color: #9ca3af;
+}
