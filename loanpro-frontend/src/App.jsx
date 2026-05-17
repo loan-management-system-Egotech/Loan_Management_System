@@ -6,9 +6,11 @@ import DashboardLayout from './layouts/DashboardLayout';
 
 // Pages
 import Login from './pages/auth/Login';
+import Wallet from './pages/customer/Wallet';
+import ApplyForLoan from './pages/customer/ApplyForLoan';
+import ReviewApplication from './pages/admin/ReviewApplication';
 // (We will import these as we build them)
 // import Register from './pages/auth/Register';
-// import Wallet from './pages/customer/Wallet';
 // import AdminDashboard from './pages/admin/AdminDashboard';
 
 function App() {
@@ -23,11 +25,13 @@ function App() {
           {/* <Route path="/register" element={<Register />} /> */}
         </Route>
 
-        {/* Dashboard Routes (Uses the DashboardLayout with Sidebar) */}
+        {/* Dashboard Routes */}
         <Route element={<DashboardLayout />}>
-           {/* Temporary placeholder until we build the Dashboards */}
-          <Route path="/dashboard" element={<div>Dashboard Coming Soon</div>} />
-          {/* <Route path="/wallet" element={<Wallet />} /> */}
+          <Route path="/wallet" element={<Wallet />} />
+          <Route path="/apply" element={<ApplyForLoan />} />
+          <Route path="/admin/review" element={<ReviewApplication />} />
+          {/* Temporary redirect if they just go to /dashboard */}
+          <Route path="/dashboard" element={<Navigate to="/wallet" replace />} />
         </Route>
 
         {/* Catch-all: Redirect any unknown URLs to the login page */}

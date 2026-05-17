@@ -1,60 +1,33 @@
 import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
-const navItems = [
-  { path: '/',             label: 'Dashboard',    icon: '📊' },
-  { path: '/wallet',       label: 'My Wallet',    icon: '💳' },
-  { path: '/apply',        label: 'Apply for Loan', icon: '📝' },
-  { path: '/users',        label: 'Users',        icon: '👥' },
-];
-
-function Sidebar({ isOpen, onClose }) {
+const Sidebar = () => {
   return (
-    <>
-      {/* Mobile backdrop */}
-      {isOpen && <div className="sidebar-backdrop" onClick={onClose} />}
+    <aside className="loanpro-sidebar">
+      {/* Brand Logo Area */}
+      <div className="sidebar-brand">
+        <h1>LoanPro</h1>
+      </div>
 
-      <aside className={`sidebar ${isOpen ? 'sidebar--open' : ''}`}>
-        {/* Brand */}
-        <div className="sidebar__brand">
-          <div className="sidebar__logo">LP</div>
-          <span className="sidebar__brand-text">LoanPro</span>
-        </div>
+      {/* Navigation Links */}
+      <nav className="sidebar-nav">
+        {/* We use NavLink instead of <a> tags so the page doesn't refresh! */}
+        <NavLink to="/dashboard" className="nav-item">Dashboard</NavLink>
+        <NavLink to="/loans" className="nav-item">My Loans</NavLink>
+        <NavLink to="/apply" className="nav-item">Apply For Loan</NavLink>
+        <NavLink to="/schedule" className="nav-item">Repayment Schedule</NavLink>
+        <NavLink to="/history" className="nav-item">Payment History</NavLink>
+        <NavLink to="/notifications" className="nav-item">Notifications</NavLink>
+        <NavLink to="/wallet" className="nav-item">Wallet</NavLink>
+        <NavLink to="/profile" className="nav-item">Profile</NavLink>
+      </nav>
 
-        {/* Navigation */}
-        <nav className="sidebar__nav">
-          <ul className="sidebar__list">
-            {navItems.map((item) => (
-              <li key={item.path}>
-                <NavLink
-                  to={item.path}
-                  end={item.path === '/'}
-                  className={({ isActive }) =>
-                    `sidebar__link ${isActive ? 'sidebar__link--active' : ''}`
-                  }
-                  onClick={onClose}
-                >
-                  <span className="sidebar__link-icon">{item.icon}</span>
-                  <span className="sidebar__link-label">{item.label}</span>
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* Footer */}
-        <div className="sidebar__footer">
-          <div className="sidebar__user">
-            <div className="sidebar__avatar">A</div>
-            <div className="sidebar__user-info">
-              <span className="sidebar__user-name">Admin</span>
-              <span className="sidebar__user-role">Manager</span>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </>
+      {/* Footer Area */}
+      <div className="sidebar-footer">
+        <NavLink to="/support" className="nav-item">Help & Support</NavLink>
+      </div>
+    </aside>
   );
-}
+};
 
 export default Sidebar;
