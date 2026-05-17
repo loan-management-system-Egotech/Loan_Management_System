@@ -1,0 +1,52 @@
+.progress-container {
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.progress-label {
+  color: #4b5563; /* Medium Gray */
+  font-weight: 500;
+}
+
+.progress-text {
+  font-weight: 600;
+}
+
+/* The Background Track */
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background-color: #e5e7eb; /* Light Gray */
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* The Animated Fill */
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  /* Adds a smooth animation when the bar loads */
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+/* Color Variants */
+.bg-primary { background-color: #3b5bdb; }  /* Blue */
+.bg-success { background-color: #10b981; }  /* Green */
+.bg-warning { background-color: #f59e0b; }  /* Orange/Yellow */
+.bg-danger  { background-color: #ef4444; }  /* Red */
+
+/* Text Colors to match */
+:root {
+  --color-primary: #3b5bdb;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+}

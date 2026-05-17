@@ -1,16 +1,272 @@
-.apply-page { display: flex; flex-direction: column; gap: 1.5rem; }
-.apply-page__title { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; }
-.apply-page__subtitle { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
+.apply-loan-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
 
-.apply-page__types { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.25rem 0;
+  color: #1e293b;
+}
+
+.page-header p {
+  color: #64748b;
+  margin: 0;
+}
+
+/* --- Stepper UI --- */
+.stepper-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  padding: 0 2rem;
+}
+
+.step-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #cbd5e1;
+  color: #94a3b8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  z-index: 2;
+  transition: all 0.3s;
+}
+
+.step-circle.active {
+  background-color: #3b5bdb;
+  border-color: #3b5bdb;
+  color: white;
+  box-shadow: 0 0 0 4px rgba(59, 91, 219, 0.2);
+}
+
+.step-circle.completed {
+  background-color: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+.step-label {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.step-label.active {
+  color: #3b5bdb;
+  font-weight: 600;
+}
+
+.step-line {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background-color: #cbd5e1;
+  z-index: 1;
+}
+
+.step-line.completed {
+  background-color: #10b981;
+}
+
+/* --- Card & Form UI --- */
+.application-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.step-content {
+  padding: 2rem;
+}
+
+.step-title {
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1e293b;
+  font-size: 1.1rem;
+}
+
+.loan-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
 
 .loan-type-card {
-  background: var(--bg-primary); border: 2px solid var(--border-color); border-radius: 1rem;
-  padding: 1.25rem; cursor: pointer; transition: all 0.25s ease; text-align: center;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-.loan-type-card:hover { border-color: var(--primary-light); box-shadow: 0 4px 16px rgba(59, 91, 219, 0.08); }
-.loan-type-card--selected { border-color: var(--primary); background: rgba(59, 91, 219, 0.04); box-shadow: 0 4px 16px rgba(59, 91, 219, 0.12); }
-.loan-type-card__label { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem; }
-.loan-type-card__detail { font-size: 0.8rem; color: var(--text-muted); margin: 0.15rem 0; }
 
-.apply-page__form { display: flex; flex-direction: column; gap: 1.15rem; margin-top: 0.5rem; }
+.loan-type-card:hover {
+  border-color: #94a3b8;
+}
+
+.loan-type-card.selected {
+  border-color: #3b5bdb;
+  background-color: rgba(59, 91, 219, 0.05);
+}
+
+.loan-type-card h4 { margin: 0 0 0.5rem 0; color: #1e293b; }
+.loan-type-card .limit { margin: 0 0 0.5rem 0; color: #64748b; font-size: 0.9rem; font-weight: 500;}
+.loan-type-card .desc { margin: 0; color: #94a3b8; font-size: 0.85rem;}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* --- Multi-Column Form Layout --- */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.section-subtitle {
+  color: #3b5bdb; /* Brand Blue */
+  font-size: 1rem;
+  margin: 1.5rem 0 1rem 0;
+  border-bottom: 1px dashed #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+/* Flex alignments for the action buttons */
+.form-actions.right {
+  justify-content: flex-end;
+}
+
+.form-actions.space-between {
+  justify-content: space-between;
+}
+
+/* --- Step 4: Upload Cards --- */
+.upload-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  background-color: #f8fafc;
+}
+
+.upload-card.required {
+  border-color: #a7f3d0; /* Light green border for required */
+  background-color: #f0fdf4; /* Very light green tint */
+}
+
+.upload-card.optional {
+  border-color: #cbd5e1;
+  background-color: #f1f5f9;
+}
+
+.upload-info h4 {
+  margin: 0.5rem 0 0.25rem 0;
+  color: #1e293b;
+  font-size: 1rem;
+}
+
+.upload-info p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  background-color: #3b5bdb;
+  color: white;
+}
+
+.badge.gray {
+  background-color: #ffffff;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+
+/* --- Step 5: Review Summary --- */
+.review-section {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 1.5rem;
+}
+
+.review-section h4 {
+  color: #3b5bdb;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.review-label {
+  font-size: 0.85rem;
+  color: #64748b;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.review-value {
+  margin: 0;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.terms-box {
+  background-color: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  color: #1e3a8a;
+  font-weight: 500;
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.terms-box p {
+  margin: 0;
+}
