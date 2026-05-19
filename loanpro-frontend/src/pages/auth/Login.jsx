@@ -1,29 +1,34 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/useAuth';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import './Login.css';
 
 const Login = () => {
-  // Set up React State to track what the user types
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
 
-  // This function updates the state whenever a user types in a field
+  // Bring in our context and navigation hooks
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // This runs when the user clicks "Sign In"
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents the page from refreshing
-    console.log("Attempting to login with:", formData);
-    // Later, this is where we will check if the user exists!
+  // Updated handleSubmit with auth context
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Call our fake login function
+      await login(formData.email, formData.password);
+
+      // If successful, send them to the wallet!
+      navigate('/wallet');
+    } catch (error) {
+      console.error("Login failed", error);
+    }
   };
 
   return (

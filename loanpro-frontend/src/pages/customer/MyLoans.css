@@ -1,0 +1,130 @@
+.my-loans-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* --- Top Grid --- */
+.loans-top-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.active-loan-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 1rem;
+}
+
+.loan-title { margin: 0 0 0.25rem 0; color: #1e293b; font-size: 1.25rem; }
+.loan-id { margin: 0; color: #64748b; font-size: 0.85rem; }
+
+.loan-amounts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.amount-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.amount-box .label { font-size: 0.8rem; color: #64748b; }
+.amount-box .value { margin: 0; color: #1e293b; font-size: 1.1rem; }
+
+.repayment-progress {
+  background-color: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e1;
+}
+
+/* --- EMI Action Card --- */
+.emi-card.brand-bg {
+  background-color: #0f172a; /* Dark Navy Blue */
+  color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.emi-header { font-size: 0.8rem; font-weight: 600; opacity: 0.8; margin-bottom: 1rem; }
+.emi-amount { font-size: 2.5rem; margin: 0 0 0.5rem 0; color: #3b5bdb; }
+.emi-date { margin: 0 0 1.5rem 0; font-size: 0.9rem; opacity: 0.9; }
+
+.urgency-box {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.emi-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto; /* Pushes buttons to the bottom */
+}
+
+.full-width-btn { width: 100%; }
+.text-btn { 
+  background: transparent; 
+  border: none; 
+  color: white; 
+  opacity: 0.8; 
+  cursor: pointer; 
+  font-size: 0.85rem; 
+  text-decoration: underline;
+}
+.text-btn:hover { opacity: 1; }
+
+/* --- History Section --- */
+.history-section {
+  margin-top: 1rem;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.history-header h3 { margin: 0; color: #1e293b; }
+
+.download-btn {
+  background: white;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.download-btn:hover {
+  border-color: #3b5bdb;
+  color: #3b5bdb;
+}
+
+.tx-id { font-size: 0.85rem; color: #64748b; }
+.font-semibold { font-weight: 600; color: #1e293b; }

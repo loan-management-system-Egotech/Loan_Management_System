@@ -1,6 +1,7 @@
+/* --- Sidebar Base Layout --- */
 .loanpro-sidebar {
   width: 260px;
-  background-color: #f8fafc; /* Very light gray/blue tint from Figma */
+  background-color: #f8fafc;
   border-right: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
@@ -11,7 +12,7 @@
 
 .sidebar-brand {
   padding: 2rem;
-  color: #1e3a8a; /* Dark brand blue */
+  color: #1e3a8a;
 }
 
 .sidebar-brand h1 {
@@ -46,11 +47,28 @@
 /* React Router automatically applies this class to the current page URL! */
 .nav-item.active {
   background-color: transparent;
-  color: #3b5bdb; /* Bright blue text */
+  color: #3b5bdb;
   font-weight: 600;
 }
 
 .sidebar-footer {
   padding: 1rem;
   border-top: 1px solid #e2e8f0;
+}
+
+/* --- Logout Button Styling --- */
+.logout-btn {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  font-family: inherit;
+  color: #64748b;
+}
+
+.logout-btn:hover {
+  background-color: #fef2f2;
+  color: #dc2626;
 }

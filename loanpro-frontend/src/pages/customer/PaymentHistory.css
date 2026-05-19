@@ -1,0 +1,78 @@
+.history-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.history-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.history-stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.history-stat-card .stat-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.history-stat-card .stat-value {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #1e293b;
+}
+
+.text-primary { color: #3b5bdb !important; }
+.text-success { color: #10b981 !important; }
+
+.history-table-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.history-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.history-table-header h3 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.download-btn {
+  background: white;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.download-btn:hover {
+  border-color: #3b5bdb;
+  color: #3b5bdb;
+}
+
+.tx-id { font-size: 0.85rem; color: #64748b; }
+.font-semibold { font-weight: 600; color: #1e293b; }
+
+.status-badge.paid { background-color: #d1fae5; color: #065f46; }

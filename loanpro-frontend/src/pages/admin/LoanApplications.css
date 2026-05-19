@@ -1,0 +1,100 @@
+.queue-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.queue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.queue-header h2 { margin: 0 0 0.25rem 0; color: #1e293b; }
+.queue-header p { margin: 0; color: #64748b; font-size: 0.9rem; }
+
+.queue-search {
+  padding: 0.6rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  width: 250px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.queue-search:focus {
+  border-color: #3b5bdb;
+}
+
+.queue-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+/* --- Tabs Styling --- */
+.queue-tabs {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 1rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  color: #1e293b;
+}
+
+.tab-btn.active {
+  color: #3b5bdb;
+  font-weight: 600;
+  border-bottom-color: #3b5bdb;
+  background-color: white;
+}
+
+/* --- Table Enhancements --- */
+.table-wrapper {
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.loanpro-table.full-width {
+  width: 100%;
+}
+
+.app-id { font-weight: 600; color: #64748b; font-size: 0.85rem;}
+.app-name { font-weight: 600; color: #1e293b; }
+.app-amount { font-weight: 600; color: #3b5bdb; }
+
+/* Adjusting your standard badge colors */
+.status-badge.pending { background-color: #fef3c7; color: #d97706; }
+.status-badge.approved { background-color: #d1fae5; color: #065f46; }
+.status-badge.rejected { background-color: #fee2e2; color: #991b1b; }
+
+.action-link { text-decoration: none; }
+.view-link { color: #3b5bdb; text-decoration: none; font-size: 0.85rem; font-weight: 500; }
+.view-link:hover { text-decoration: underline; }
+
+.sm-btn {
+  padding: 0.4rem 1rem !important;
+  font-size: 0.8rem !important;
+  width: auto !important;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem !important;
+  color: #94a3b8;
+}
