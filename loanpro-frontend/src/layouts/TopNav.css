@@ -1,40 +1,161 @@
+/* --- TopNav Base Layout --- */
 .loanpro-topnav {
-  background-color: #0f172a; /* Dark navy blue from Figma */
-  color: white;
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
-  height: 80px;
+  padding: 1rem 2rem;
+  height: 70px;
 }
 
-.topnav-titles h2 {
-  font-size: 1.25rem;
+.nav-left h2 {
+  font-size: 1.15rem;
   margin: 0 0 0.25rem 0;
   font-weight: 600;
+  color: #1e293b;
 }
 
-.topnav-titles p {
+.nav-left p {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: #64748b;
   margin: 0;
 }
 
-.topnav-search input {
-  background-color: #1e293b;
-  border: 1px solid #334155;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-sm {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #3b5bdb;
   color: white;
-  width: 250px;
-  outline: none;
-  transition: border-color 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
-.topnav-search input:focus {
-  border-color: #3b5bdb;
+/* --- Notification Dropdown System --- */
+.notification-wrapper {
+  position: relative;
 }
 
-.topnav-search input::placeholder {
-  color: #64748b;
+.icon-btn {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.icon-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white;
+}
+
+/* The Panel Itself */
+.notification-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 320px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+}
+
+.dropdown-header h4 { margin: 0; color: #1e293b; font-size: 0.95rem; }
+
+.mark-read-btn {
+  background: none;
+  border: none;
+  color: #3b5bdb;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.dropdown-body {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notif-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.2s;
+}
+
+.notif-item:hover { background-color: #f8fafc; }
+.notif-item.unread { background-color: #f0fdf4; }
+
+.notif-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.bg-success { background-color: #10b981; }
+.bg-warning { background-color: #f59e0b; }
+.bg-info { background-color: #3b5bdb; }
+
+.notif-content h5 { margin: 0 0 0.25rem 0; color: #1e293b; font-size: 0.9rem; }
+.notif-content p { margin: 0 0 0.25rem 0; color: #64748b; font-size: 0.8rem; line-height: 1.4; }
+.notif-time { font-size: 0.7rem; color: #94a3b8; }
+
+.dropdown-footer {
+  padding: 0.75rem;
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+}
+
+.dropdown-footer a {
+  color: #3b5bdb;
+  font-size: 0.85rem;
+  text-decoration: none;
+  font-weight: 500;
 }

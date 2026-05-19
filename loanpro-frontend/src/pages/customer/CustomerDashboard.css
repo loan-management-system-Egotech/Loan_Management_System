@@ -1,0 +1,112 @@
+.cust-dash-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* --- Stats Grid --- */
+.dash-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.dash-stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dash-stat-label { font-size: 0.8rem; color: #64748b; font-weight: 600; }
+.dash-stat-value { margin: 0; color: #1e293b; font-size: 1.5rem; }
+.dash-stat-value.emi-highlight { color: #3b5bdb; }
+.dash-stat-link { font-size: 0.8rem; color: #3b5bdb; text-decoration: none; font-weight: 500; }
+.dash-stat-link:hover { text-decoration: underline; }
+.dash-stat-sub { font-size: 0.8rem; color: #f59e0b; font-weight: 500; }
+
+/* --- Two Column Grid --- */
+.dash-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.dash-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.dash-card-title {
+  margin: 0 0 1.25rem 0;
+  color: #1e3a8a;
+  font-size: 1.05rem;
+}
+
+.dash-loan-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.dash-loan-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.dash-loan-row span { color: #64748b; }
+.dash-loan-row strong { color: #1e293b; }
+
+.dash-card-actions {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.dash-link-btn {
+  color: #3b5bdb;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.dash-link-btn:hover { text-decoration: underline; }
+
+/* --- Quick Actions --- */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.quick-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #1e293b;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.quick-action-btn:hover {
+  background: #eef2ff;
+  border-color: #3b5bdb;
+  color: #3b5bdb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 91, 219, 0.1);
+}
+
+.qa-icon { font-size: 1.5rem; }
