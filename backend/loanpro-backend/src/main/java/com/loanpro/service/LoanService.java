@@ -47,7 +47,7 @@ public class LoanService {
                 .loanId("LN-" + (System.currentTimeMillis() % 100000))
                 .user(application.getUser())
                 .application(application)
-                .loanTypeName(application.getLoanType().getName().toUpperCase().replace(" LOAN", ""))
+                .loanTypeName(application.getLoanType().getName())
                 .principalAmount(principal)
                 .totalPayable(totalPayable)
                 .amountPaid(BigDecimal.ZERO)
@@ -133,7 +133,7 @@ public class LoanService {
 
         return LoanDetailResponse.builder()
                 .id(loan.getLoanId())
-                .type(loan.getLoanTypeName() + " Loan")
+                .type(loan.getLoanTypeName())
                 .status(loan.getStatus().name())
                 .principal(loan.getPrincipalAmount())
                 .totalPayable(loan.getTotalPayable())
