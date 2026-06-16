@@ -3,6 +3,7 @@ package com.loanpro.service;
 import com.loanpro.dto.request.SavingGoalRequest;
 import com.loanpro.dto.request.WalletTopUpRequest;
 import com.loanpro.dto.request.WalletTransferRequest;
+import com.loanpro.dto.response.SavingGoalResponse;
 import com.loanpro.dto.response.TransactionResponse;
 import com.loanpro.dto.response.WalletResponse;
 import com.loanpro.entity.SavingGoal;
@@ -149,12 +150,14 @@ public class WalletService {
         return breakdown;
     }
 
-    public List<SavingGoal> getSavingGoals() {
-        return savingGoalRepository.findByUser(userService.getCurrentUser());
+    public List<SavingGoalResponse> getSavingGoals() {
+        return savingGoalRepository.findByUser(userService.getCurrentUser()).stream()
+                .map(this::mapToSavingGoalResponse)
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public SavingGoal createSavingGoal(SavingGoalRequest request) {
+    public SavingGoalResponse createSavingGoal(SavingGoalRequest request) {
         SavingGoal goal = SavingGoal.builder()
                 .user(userService.getCurrentUser())
                 .label(request.getLabel())
@@ -163,7 +166,18 @@ public class WalletService {
                 .color(request.getColor() != null ? request.getColor() : "#3b82f6")
                 .createdAt(LocalDateTime.now())
                 .build();
-        return savingGoalRepository.save(goal);
+        return mapToSavingGoalResponse(savingGoalRepository.save(goal));
+    }
+
+    private SavingGoalResponse mapToSavingGoalResponse(SavingGoal goal) {
+        return SavingGoalResponse.builder()
+                .id(goal.getId())
+                .label(goal.getLabel())
+                .currentAmount(goal.getCurrentAmount())
+                .targetAmount(goal.getTargetAmount())
+                .color(goal.getColor())
+                .progressPercentage(goal.getProgressPercentage())
+                .build();
     }
 
     private TransactionResponse mapToTransactionResponse(Transaction t) {

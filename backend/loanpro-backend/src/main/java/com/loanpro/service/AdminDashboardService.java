@@ -17,12 +17,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.management.ManagementFactory;
 import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -80,7 +81,37 @@ public class AdminDashboardService {
         data.put("months", List.of("Jan", "Feb", "Mar", "Apr", "May", "Jun"));
         data.put("disbursements", List.of(120, 150, 180, 200, 170, 220));
         data.put("collections", List.of(100, 130, 160, 180, 150, 200));
+
+        // Real loan portfolio mix: active loans grouped by loan type
+        Map<String, Long> portfolio = loanRepository.findAll().stream()
+                .filter(loan -> loan.getStatus() == LoanStatus.ACTIVE)
+                .collect(Collectors.groupingBy(Loan::getLoanTypeName, Collectors.counting()));
+        data.put("portfolio", portfolio);
+
         return data;
+    }
+
+    /**
+     * Real operational metrics for the admin "System Health" panel, derived from
+     * the database and the JVM runtime (no fabricated infrastructure numbers).
+     */
+    public Map<String, Object> getSystemHealth() {
+        Map<String, Object> health = new HashMap<>();
+        health.put("totalUsers", userRepository.count());
+        health.put("activeLoans", loanRepository.countByStatus(LoanStatus.ACTIVE));
+        health.put("pendingApplications", applicationRepository.countByStatus(ApplicationStatus.PENDING));
+        health.put("uptime", formatUptime(ManagementFactory.getRuntimeMXBean().getUptime()));
+        return health;
+    }
+
+    private String formatUptime(long uptimeMs) {
+        long totalMinutes = uptimeMs / 60000;
+        long days = totalMinutes / (60 * 24);
+        long hours = (totalMinutes / 60) % 24;
+        long minutes = totalMinutes % 60;
+        if (days > 0) return days + "d " + hours + "h";
+        if (hours > 0) return hours + "h " + minutes + "m";
+        return minutes + "m";
     }
 
     public Page<UserProfileResponse> getAllUsers(Pageable pageable) {

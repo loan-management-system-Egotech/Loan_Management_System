@@ -31,6 +31,11 @@ public class AdminDashboardController {
         return ResponseEntity.ok(adminDashboardService.getChartsData());
     }
 
+    @GetMapping("/dashboard/system")
+    public ResponseEntity<Map<String, Object>> getSystemHealth() {
+        return ResponseEntity.ok(adminDashboardService.getSystemHealth());
+    }
+
     @GetMapping("/users")
     public ResponseEntity<Page<UserProfileResponse>> getUsers(
             @RequestParam(defaultValue = "0") int page,

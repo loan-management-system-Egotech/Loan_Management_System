@@ -34,6 +34,7 @@ E:\work\Loan_Management_System\backend\loanpro-backend\src\main\java\com\loanpro
 E:\work\Loan_Management_System\backend\loanpro-backend\src\main\java\com\loanpro\dto\response\NotificationResponse.java
 E:\work\Loan_Management_System\backend\loanpro-backend\src\main\java\com\loanpro\dto\response\PaymentResponse.java
 E:\work\Loan_Management_System\backend\loanpro-backend\src\main\java\com\loanpro\dto\response\RepaymentScheduleResponse.java
+E:\work\Loan_Management_System\backend\loanpro-backend\src\main\java\com\loanpro\dto\response\SavingGoalResponse.java
 E:\work\Loan_Management_System\backend\loanpro-backend\src\main\java\com\loanpro\dto\response\TransactionResponse.java
 E:\work\Loan_Management_System\backend\loanpro-backend\src\main\java\com\loanpro\dto\response\UserProfileResponse.java
 E:\work\Loan_Management_System\backend\loanpro-backend\src\main\java\com\loanpro\dto\response\WalletResponse.java

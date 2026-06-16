@@ -4,10 +4,13 @@ import { apiGet } from '../../api/apiClient';
 import { errorMessage } from '../../utils/format';
 import './AdminDashboard.css';
 
+const DONUT_COLORS = ['#3b5bdb', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+
 const AdminDashboard = () => {
   const [stats, setStats] = useState([]);
   const [charts, setCharts] = useState({});
   const [recent, setRecent] = useState([]);
+  const [health, setHealth] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -17,15 +20,17 @@ const AdminDashboard = () => {
       try {
         setLoading(true);
         setError('');
-        const [statsRes, chartsRes, appsRes] = await Promise.all([
+        const [statsRes, chartsRes, appsRes, healthRes] = await Promise.all([
           apiGet('/admin/dashboard/stats'),
           apiGet('/admin/dashboard/charts').catch(() => ({})),
           apiGet('/admin/applications?status=ALL&page=0&size=5').catch(() => ({ content: [] })),
+          apiGet('/admin/dashboard/system').catch(() => null),
         ]);
         if (!active) return;
         setStats(Array.isArray(statsRes) ? statsRes : []);
         setCharts(chartsRes || {});
         setRecent(appsRes?.content || []);
+        setHealth(healthRes);
       } catch (e) {
         if (active) setError(errorMessage(e));
       } finally {
@@ -49,6 +54,23 @@ const AdminDashboard = () => {
   }, [charts]);
 
   const activeLoans = stats.find((s) => s.title === 'Active Loans')?.value || '0';
+
+  // Build the real loan-portfolio donut from the per-type active-loan counts.
+  const portfolio = useMemo(() => {
+    const entries = Object.entries(charts?.portfolio || {});
+    const total = entries.reduce((sum, [, count]) => sum + count, 0);
+    let cursor = 0;
+    const segments = entries.map(([label, count], i) => {
+      const start = total > 0 ? (cursor / total) * 100 : 0;
+      cursor += count;
+      const end = total > 0 ? (cursor / total) * 100 : 0;
+      return { label, count, color: DONUT_COLORS[i % DONUT_COLORS.length], start, end };
+    });
+    const gradient = total > 0
+      ? `conic-gradient(${segments.map((s) => `${s.color} ${s.start}% ${s.end}%`).join(', ')})`
+      : 'conic-gradient(#e2e8f0 0% 100%)';
+    return { segments, total, gradient };
+  }, [charts]);
 
   if (loading) return <div className="page-loading">Loading dashboard…</div>;
   if (error) return <div className="page-error">{error}</div>;
@@ -90,16 +112,22 @@ const AdminDashboard = () => {
         <div className="chart-card">
           <h3 className="chart-title">Loan Portfolio Mix</h3>
           <div className="donut-chart-container">
-            <div className="css-donut-chart">
+            <div className="css-donut-chart" style={{ background: portfolio.gradient }}>
               <div className="donut-hole">
                 <span className="donut-center-text">{activeLoans}</span>
               </div>
             </div>
           </div>
           <div className="chart-legend centered">
-            <span className="legend-item"><div className="dot blue"></div> Personal</span>
-            <span className="legend-item"><div className="dot green"></div> Business</span>
-            <span className="legend-item"><div className="dot purple"></div> Home</span>
+            {portfolio.total === 0 ? (
+              <span className="legend-item" style={{ color: 'var(--text-muted)' }}>No active loans</span>
+            ) : (
+              portfolio.segments.map((s) => (
+                <span className="legend-item" key={s.label}>
+                  <div className="dot" style={{ backgroundColor: s.color }}></div> {s.label} ({s.count})
+                </span>
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -141,12 +169,12 @@ const AdminDashboard = () => {
         </div>
 
         <div className="health-card">
-          <h3 className="chart-title">System Health</h3>
+          <h3 className="chart-title">System Overview</h3>
           <div className="health-grid">
-            <div className="health-box"><p>API Response</p><h4 className="text-success">42ms</h4></div>
-            <div className="health-box"><p>Server Uptime</p><h4 className="text-success">99.8%</h4></div>
-            <div className="health-box"><p>DB Load</p><h4 className="text-primary">34%</h4></div>
-            <div className="health-box"><p>Error Rate</p><h4 className="text-success">0.02%</h4></div>
+            <div className="health-box"><p>Total Users</p><h4 className="text-primary">{health?.totalUsers ?? '—'}</h4></div>
+            <div className="health-box"><p>Active Loans</p><h4 className="text-success">{health?.activeLoans ?? '—'}</h4></div>
+            <div className="health-box"><p>Pending Review</p><h4 className="text-primary">{health?.pendingApplications ?? '—'}</h4></div>
+            <div className="health-box"><p>Server Uptime</p><h4 className="text-success">{health?.uptime ?? '—'}</h4></div>
           </div>
         </div>
       </div>

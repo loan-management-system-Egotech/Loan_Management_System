@@ -304,9 +304,15 @@ the loan to `COMPLETED`.
 | Method | Endpoint | Access | Description |
 |--------|----------|--------|-------------|
 | GET | `/admin/dashboard/stats` | Admin | Summary stat cards |
-| GET | `/admin/dashboard/charts` | Admin | Chart aggregates (disbursements/collections) |
+| GET | `/admin/dashboard/charts` | Admin | Chart aggregates (disbursements/collections + active-loan portfolio mix) |
+| GET | `/admin/dashboard/system` | Admin | Real system metrics (user/loan/pending counts, server uptime) |
 | GET | `/admin/users` | Admin | List all users |
 | PUT | `/admin/users/{id}/role` | Admin | Change a user's role |
+
+**`GET /admin/dashboard/system`** (example):
+```json
+{ "totalUsers": 3, "activeLoans": 12, "pendingApplications": 4, "uptime": "2h 15m" }
+```
 
 **`PUT /admin/users/{id}/role`** — body is the new role, e.g.:
 ```json
@@ -356,5 +362,6 @@ the loan to `COMPLETED`.
 | 35 | PUT | `/notifications/read-all` | Auth |
 | 36 | GET | `/admin/dashboard/stats` | Admin |
 | 37 | GET | `/admin/dashboard/charts` | Admin |
-| 38 | GET | `/admin/users` | Admin |
-| 39 | PUT | `/admin/users/{id}/role` | Admin |
+| 38 | GET | `/admin/dashboard/system` | Admin |
+| 39 | GET | `/admin/users` | Admin |
+| 40 | PUT | `/admin/users/{id}/role` | Admin |

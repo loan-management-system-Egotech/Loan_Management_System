@@ -3,9 +3,9 @@ package com.loanpro.controller;
 import com.loanpro.dto.request.SavingGoalRequest;
 import com.loanpro.dto.request.WalletTopUpRequest;
 import com.loanpro.dto.request.WalletTransferRequest;
+import com.loanpro.dto.response.SavingGoalResponse;
 import com.loanpro.dto.response.TransactionResponse;
 import com.loanpro.dto.response.WalletResponse;
-import com.loanpro.entity.SavingGoal;
 import com.loanpro.service.WalletService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -56,12 +56,12 @@ public class WalletController {
     }
 
     @GetMapping("/saving-goals")
-    public ResponseEntity<List<SavingGoal>> getSavingGoals() {
+    public ResponseEntity<List<SavingGoalResponse>> getSavingGoals() {
         return ResponseEntity.ok(walletService.getSavingGoals());
     }
 
     @PostMapping("/saving-goals")
-    public ResponseEntity<SavingGoal> createSavingGoal(@Valid @RequestBody SavingGoalRequest request) {
+    public ResponseEntity<SavingGoalResponse> createSavingGoal(@Valid @RequestBody SavingGoalRequest request) {
         return ResponseEntity.ok(walletService.createSavingGoal(request));
     }
 }

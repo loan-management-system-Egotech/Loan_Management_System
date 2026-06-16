@@ -1,3 +1,4 @@
+com\loanpro\dto\response\SavingGoalResponse$SavingGoalResponseBuilder.class
 com\loanpro\controller\UserController.class
 com\loanpro\dto\response\LoanDetailResponse$NextEmiDto$NextEmiDtoBuilder.class
 com\loanpro\dto\response\LoanDetailResponse$LoanDetailResponseBuilder.class
@@ -8,6 +9,7 @@ com\loanpro\service\WalletService.class
 com\loanpro\dto\response\RepaymentScheduleResponse$RepaymentScheduleResponseBuilder.class
 com\loanpro\exception\UnauthorizedException.class
 com\loanpro\dto\response\RepaymentScheduleResponse.class
+com\loanpro\dto\response\SavingGoalResponse.class
 com\loanpro\entity\Notification.class
 com\loanpro\controller\DocumentController.class
 com\loanpro\dto\response\LoanTypeResponse.class
