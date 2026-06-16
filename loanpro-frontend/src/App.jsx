@@ -8,6 +8,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 
 // Auth Pages
 import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 
 // Customer Pages
 import CustomerDashboard from './pages/customer/CustomerDashboard';
@@ -23,6 +24,7 @@ import Notifications from './pages/customer/Notifications';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ReviewApplication from './pages/admin/ReviewApplication';
 import LoanApplications from './pages/admin/LoanApplications';
+import Users from './pages/admin/Users';
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
           {/* Public Routes */}
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Route>
 
           {/* Protected Routes */}
@@ -48,10 +51,13 @@ function App() {
               <Route path="/history" element={<PaymentHistory />} />
               <Route path="/notifications" element={<Notifications />} />
               
-              {/* Admin Routes */}
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/applications" element={<LoanApplications />} />
-              <Route path="/admin/review" element={<ReviewApplication />} />
+              {/* Admin Routes (role-guarded — customers are redirected to /dashboard) */}
+              <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/applications" element={<LoanApplications />} />
+                <Route path="/admin/review/:id" element={<ReviewApplication />} />
+                <Route path="/admin/users" element={<Users />} />
+              </Route>
             </Route>
           </Route>
 

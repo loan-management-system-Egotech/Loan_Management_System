@@ -3,41 +3,37 @@ package com.loanpro.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Single source of CORS configuration for the application.
+ *
+ * Exposed as a bean named "corsConfigurationSource" so that Spring Security's
+ * {@code http.cors(Customizer.withDefaults())} picks it up automatically and
+ * applies it inside the security filter chain — which correctly short-circuits
+ * pre-flight (OPTIONS) requests before authorization runs.
+ */
 @Configuration
 public class CorsConfig {
 
     @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://127.0.0.1:5173"
+        ));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization"));
         config.setAllowCredentials(true);
-        // Allow Vite dev server and any other front-ends
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://127.0.0.1:5173"));
-        config.setAllowedHeaders(Arrays.asList(
-                "Origin", 
-                "Content-Type", 
-                "Accept", 
-                "Authorization", 
-                "X-Requested-With", 
-                "Access-Control-Request-Method", 
-                "Access-Control-Request-Headers"));
-        config.setExposedHeaders(Arrays.asList(
-                "Origin", 
-                "Content-Type", 
-                "Accept", 
-                "Authorization", 
-                "Access-Control-Allow-Origin", 
-                "Access-Control-Allow-Credentials"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        return source;
     }
 }

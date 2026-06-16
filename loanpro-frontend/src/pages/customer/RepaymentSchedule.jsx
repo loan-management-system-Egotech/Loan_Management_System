@@ -1,8 +1,57 @@
-import { amortizationSchedule, myActiveLoan } from '../../data/mockData';
+import { useState, useEffect } from 'react';
+import { apiGet } from '../../api/apiClient';
+import { formatLKR, formatDate, errorMessage } from '../../utils/format';
 import Button from '../../components/Button';
 import './RepaymentSchedule.css';
 
 const RepaymentSchedule = () => {
+  const [loan, setLoan] = useState(null);
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        setLoading(true);
+        setError('');
+        let loanRes = null;
+        try {
+          loanRes = await apiGet('/loans/active');
+        } catch (e) {
+          if (e.status !== 404) throw e;
+        }
+        if (!active) return;
+        setLoan(loanRes);
+        if (loanRes) {
+          const sched = await apiGet(`/loans/${loanRes.id}/schedule`).catch(() => []);
+          if (active) setRows(Array.isArray(sched) ? sched : []);
+        }
+      } catch (e) {
+        if (active) setError(errorMessage(e));
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+    return () => { active = false; };
+  }, []);
+
+  if (loading) return <div className="page-loading">Loading your schedule…</div>;
+  if (error) return <div className="page-error">{error}</div>;
+
+  if (!loan) {
+    return (
+      <div className="schedule-container">
+        <div className="page-header">
+          <h2>Repayment Schedule</h2>
+          <p>Detailed amortization table for your active loan</p>
+        </div>
+        <div className="page-loading">No active loan to show a schedule for.</div>
+      </div>
+    );
+  }
+
   return (
     <div className="schedule-container">
       <div className="page-header">
@@ -13,21 +62,21 @@ const RepaymentSchedule = () => {
       {/* Summary Card */}
       <div className="schedule-summary-card">
         <div className="summary-info">
-          <h3>{myActiveLoan.type}</h3>
-          <p>Loan ID: {myActiveLoan.id}</p>
+          <h3>{loan.type}</h3>
+          <p>Loan ID: {loan.id}</p>
         </div>
         <div className="summary-stats">
           <div className="stat-item">
             <span>Monthly EMI</span>
-            <h4>LKR {myActiveLoan.nextEmi.amount}</h4>
+            <h4>{loan.nextEmi ? formatLKR(loan.nextEmi.amount) : '—'}</h4>
           </div>
           <div className="stat-item">
             <span>Interest Rate</span>
-            <h4>{myActiveLoan.interestRate}</h4>
+            <h4>{loan.interestRate}</h4>
           </div>
           <div className="stat-item">
             <span>Total Tenure</span>
-            <h4>{myActiveLoan.tenure}</h4>
+            <h4>{loan.tenure}</h4>
           </div>
         </div>
         <Button variant="outline">Download PDF</Button>
@@ -48,22 +97,25 @@ const RepaymentSchedule = () => {
             </tr>
           </thead>
           <tbody>
-            {amortizationSchedule.map((row) => (
-              // Add a special class if this is the next due payment
-              <tr key={row.month} className={row.status === 'Next Due' ? 'highlight-row' : ''}>
-                <td className="month-col">{row.month}</td>
-                <td className="date-col">{row.date}</td>
-                <td className="bold-col">{row.emi}</td>
-                <td>{row.principal}</td>
-                <td>{row.interest}</td>
-                <td className="bold-col">{row.balance}</td>
-                <td>
-                  <span className={`status-badge ${row.status.replace(' ', '-').toLowerCase()}`}>
-                    {row.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            {rows.length === 0 ? (
+              <tr><td colSpan={7} style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No schedule available.</td></tr>
+            ) : (
+              rows.map((row) => (
+                <tr key={row.month} className={row.status === 'Next Due' ? 'highlight-row' : ''}>
+                  <td className="month-col">{row.month}</td>
+                  <td className="date-col">{formatDate(row.date)}</td>
+                  <td className="bold-col">{formatLKR(row.emi)}</td>
+                  <td>{formatLKR(row.principal)}</td>
+                  <td>{formatLKR(row.interest)}</td>
+                  <td className="bold-col">{formatLKR(row.balance)}</td>
+                  <td>
+                    <span className={`status-badge ${String(row.status).replace(' ', '-').toLowerCase()}`}>
+                      {row.status}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

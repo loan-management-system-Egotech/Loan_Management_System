@@ -57,3 +57,43 @@ a { color: inherit; text-decoration: none; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #ced4da; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #adb5bd; }
+
+/* ─── Async page states (loading / error) shared by pages ─ */
+.page-loading,
+.page-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  padding: 2rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+.page-loading { color: var(--text-muted); }
+.page-loading::before {
+  content: '';
+  width: 18px; height: 18px;
+  margin-right: 10px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: lp-spin 0.7s linear infinite;
+}
+.page-error {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  margin: 1rem 0;
+}
+@keyframes lp-spin { to { transform: rotate(360deg); } }
+
+/* Inline form feedback reused by wired pages */
+.form-feedback { font-size: 0.85rem; padding: 0.6rem 0.85rem; border-radius: 8px; margin-top: 0.75rem; }
+.form-feedback.is-error { color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; }
+.form-feedback.is-success { color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; }
+
+/* Sidebar admin badge + TopNav "view all" link button */
+.brand-role { display: inline-block; margin-left: 8px; padding: 2px 8px; font-size: 0.7rem; font-weight: 700; color: #fff; background: var(--primary); border-radius: 999px; vertical-align: middle; }
+.dropdown-footer .link-btn { background: none; border: none; color: var(--primary); font-weight: 600; font-size: 0.85rem; cursor: pointer; padding: 0; }
+.dropdown-footer .link-btn:hover { text-decoration: underline; }

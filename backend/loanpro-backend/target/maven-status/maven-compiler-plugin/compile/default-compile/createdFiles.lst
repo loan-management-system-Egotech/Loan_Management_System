@@ -50,6 +50,7 @@ com\loanpro\dto\response\DocumentResponse.class
 com\loanpro\exception\BadRequestException.class
 com\loanpro\dto\request\LoginRequest.class
 com\loanpro\controller\WalletController.class
+com\loanpro\config\JwtAccessDeniedHandler.class
 com\loanpro\enums\Role.class
 com\loanpro\repository\SavingGoalRepository.class
 com\loanpro\service\RepaymentService.class
@@ -63,6 +64,7 @@ com\loanpro\entity\Loan.class
 com\loanpro\dto\response\UserProfileResponse$UserProfileResponseBuilder.class
 com\loanpro\controller\RepaymentController.class
 com\loanpro\config\ApplicationConfig.class
+com\loanpro\config\JwtAuthEntryPoint.class
 com\loanpro\dto\response\NotificationResponse$NotificationResponseBuilder.class
 com\loanpro\exception\InsufficientFundsException.class
 com\loanpro\service\AdminDashboardService.class

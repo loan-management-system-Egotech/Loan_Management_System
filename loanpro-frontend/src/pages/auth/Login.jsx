@@ -27,33 +27,62 @@ const GoogleIcon = () => (
   </svg>
 );
 
+// Route a user to the correct landing page based on their role.
+const routeForRole = (role) =>
+  String(role).toUpperCase() === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
+
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const { login } = useAuth();
+  const { login, register } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const switchMode = (loginMode) => {
+    setIsLogin(loginMode);
+    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    setSubmitting(true);
     try {
+      let user;
       if (isLogin) {
-        // Authenticate using the Auth Context
-        await login(formData.email, formData.password);
-        navigate('/wallet');
+        user = await login(formData.email, formData.password);
       } else {
-        // Mock registration flow - in a real app, you would hit a registration endpoint
-        alert("Registration is successful! You can now log in.");
-        setIsLogin(true);
+        user = await register({
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          confirmPassword: formData.confirmPassword,
+        });
       }
-    } catch (error) {
-      console.error("Auth action failed", error);
+      navigate(routeForRole(user?.role), { replace: true });
+    } catch (err) {
+      setError(err?.message || 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -83,6 +112,7 @@ const Login = () => {
           /* Login Card */
           <div className="auth-card">
             <h2>Login to your account</h2>
+            {error && <div className="auth-error">{error}</div>}
             <form onSubmit={handleSubmit} className="auth-form">
               <div className="form-group">
                 <label className="form-label" htmlFor="email">Email</label>
@@ -125,14 +155,14 @@ const Login = () => {
                 </div>
               </div>
 
-              <button type="submit" className="submit-btn">
-                Login now
+              <button type="submit" className="submit-btn" disabled={submitting}>
+                {submitting ? 'Logging in…' : 'Login now'}
               </button>
             </form>
 
             <p className="auth-footer-text">
               Don't have an account?{' '}
-              <a href="#signup" onClick={(e) => { e.preventDefault(); setIsLogin(false); }}>
+              <a href="#signup" onClick={(e) => { e.preventDefault(); switchMode(false); }}>
                 Sign up
               </a>
             </p>
@@ -141,12 +171,27 @@ const Login = () => {
           /* Create Account Card */
           <div className="auth-card">
             <h2>Create an account</h2>
+            {error && <div className="auth-error">{error}</div>}
             <form onSubmit={handleSubmit} className="auth-form">
               <div className="form-group">
-                <label className="form-label" htmlFor="email">Email</label>
+                <label className="form-label" htmlFor="fullName">Full Name</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  className="auth-input"
+                  placeholder="Nimal Perera"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="reg-email">Email</label>
                 <input
                   type="email"
-                  id="email"
+                  id="reg-email"
                   name="email"
                   className="auth-input"
                   placeholder="balamia@gmail.com"
@@ -157,16 +202,17 @@ const Login = () => {
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="password">Password</label>
+                <label className="form-label" htmlFor="reg-password">Password</label>
                 <div className="input-wrapper">
                   <input
                     type={showPassword ? "text" : "password"}
-                    id="password"
+                    id="reg-password"
                     name="password"
                     className="auth-input"
-                    placeholder="Enter your password"
+                    placeholder="At least 6 characters"
                     value={formData.password}
                     onChange={handleChange}
+                    minLength={6}
                     required
                   />
                   <button
@@ -180,8 +226,22 @@ const Login = () => {
                 </div>
               </div>
 
-              <button type="submit" className="submit-btn">
-                Create account
+              <div className="form-group">
+                <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  className="auth-input"
+                  placeholder="Re-enter your password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <button type="submit" className="submit-btn" disabled={submitting}>
+                {submitting ? 'Creating…' : 'Create account'}
               </button>
 
               <button type="button" className="google-btn">
@@ -192,7 +252,7 @@ const Login = () => {
 
             <p className="auth-footer-text">
               Already have an account?{' '}
-              <a href="#login" onClick={(e) => { e.preventDefault(); setIsLogin(true); }}>
+              <a href="#login" onClick={(e) => { e.preventDefault(); switchMode(true); }}>
                 Log in
               </a>
             </p>

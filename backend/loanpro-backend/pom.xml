@@ -60,6 +60,14 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- H2 in-memory database — used by the "h2" Spring profile for local
+             runs / quick verification without a PostgreSQL instance. -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- JWT (JJWT) -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

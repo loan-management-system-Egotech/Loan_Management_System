@@ -277,3 +277,20 @@
     padding: 2rem 1.5rem;
   }
 }
+
+/* ─── Error banner + disabled buttons ────────────────────── */
+.auth-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: 0.85rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.submit-btn:disabled,
+.google-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,30 +1,50 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { allApplications } from '../../data/mockData';
+import { apiGet } from '../../api/apiClient';
+import { errorMessage } from '../../utils/format';
 import Button from '../../components/Button';
 import './LoanApplications.css';
 
-const tabs = ["All Applications", "Pending", "Approved", "Rejected"];
+const tabs = ['All Applications', 'Pending', 'Approved', 'Rejected'];
+const STATUS_PARAM = {
+  'All Applications': 'ALL',
+  Pending: 'PENDING',
+  Approved: 'APPROVED',
+  Rejected: 'REJECTED',
+};
 
 const LoanApplications = () => {
-  // State to track the currently active tab
-  const [activeTab, setActiveTab] = useState("All Applications");
-  // State for a simple search bar
-  const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState('All Applications');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [apps, setApps] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // 1. Filter by Tab
-  let filteredData = allApplications;
-  if (activeTab !== "All Applications") {
-    filteredData = allApplications.filter(app => app.status === activeTab);
-  }
+  useEffect(() => {
+    // Debounce so typing in the search box doesn't fire a request per keystroke.
+    const handle = setTimeout(async () => {
+      try {
+        setLoading(true);
+        setError('');
+        const status = STATUS_PARAM[activeTab] || 'ALL';
+        const res = await apiGet(
+          `/admin/applications?status=${status}&search=${encodeURIComponent(searchTerm)}&page=${page}&size=10`,
+        );
+        setApps(res?.content || []);
+        setTotalPages(res?.totalPages || 1);
+      } catch (e) {
+        setError(errorMessage(e));
+      } finally {
+        setLoading(false);
+      }
+    }, 350);
+    return () => clearTimeout(handle);
+  }, [activeTab, searchTerm, page]);
 
-  // 2. Then Filter by Search Term
-  if (searchTerm) {
-    filteredData = filteredData.filter(app => 
-      app.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      app.id.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }
+  const changeTab = (tab) => { setActiveTab(tab); setPage(0); };
+  const changeSearch = (value) => { setSearchTerm(value); setPage(0); };
 
   return (
     <div className="queue-container">
@@ -34,31 +54,29 @@ const LoanApplications = () => {
           <p>Manage and review all customer loan requests</p>
         </div>
         <div className="search-box">
-          <input 
-            type="text" 
-            placeholder="Search by name or ID..." 
+          <input
+            type="text"
+            placeholder="Search by name or ID..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => changeSearch(e.target.value)}
             className="queue-search"
           />
         </div>
       </div>
 
       <div className="queue-card">
-        {/* Custom Tabs */}
         <div className="queue-tabs">
-          {tabs.map(tab => (
-            <button 
+          {tabs.map((tab) => (
+            <button
               key={tab}
               className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => changeTab(tab)}
             >
               {tab}
             </button>
           ))}
         </div>
 
-        {/* The Data Table */}
         <div className="table-wrapper">
           <table className="loanpro-table full-width">
             <thead>
@@ -73,8 +91,12 @@ const LoanApplications = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData.length > 0 ? (
-                filteredData.map(app => (
+              {loading ? (
+                <tr><td colSpan="7" className="empty-state">Loading applications…</td></tr>
+              ) : error ? (
+                <tr><td colSpan="7" className="empty-state">{error}</td></tr>
+              ) : apps.length > 0 ? (
+                apps.map((app) => (
                   <tr key={app.id}>
                     <td className="app-id">{app.id}</td>
                     <td className="app-name">{app.name}</td>
@@ -82,31 +104,35 @@ const LoanApplications = () => {
                     <td>{app.type}</td>
                     <td className="app-amount">{app.amount}</td>
                     <td>
-                      <span className={`status-badge ${app.status.toLowerCase()}`}>
+                      <span className={`status-badge ${String(app.status).replace(' ', '-').toLowerCase()}`}>
                         {app.status}
                       </span>
                     </td>
                     <td>
-                      {app.status === "Pending" ? (
-                        /* If Pending, give them a primary button that links to the Review page! */
-                        <Link to="/admin/review" className="action-link">
+                      {String(app.status).toLowerCase() === 'pending' ? (
+                        <Link to={`/admin/review/${app.id}`} className="action-link">
                           <Button variant="primary" className="sm-btn">Review</Button>
                         </Link>
                       ) : (
-                        /* Otherwise, just a ghost link to view details */
-                        <Link to="#view" className="view-link">View Details</Link>
+                        <Link to={`/admin/review/${app.id}`} className="view-link">View Details</Link>
                       )}
                     </td>
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan="7" className="empty-state">No applications found.</td>
-                </tr>
+                <tr><td colSpan="7" className="empty-state">No applications found.</td></tr>
               )}
             </tbody>
           </table>
         </div>
+
+        {!loading && totalPages > 1 && (
+          <div className="queue-pagination" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', alignItems: 'center', padding: '1rem' }}>
+            <Button variant="outline" className="sm-btn" onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={page === 0}>Prev</Button>
+            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Page {page + 1} of {totalPages}</span>
+            <Button variant="outline" className="sm-btn" onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1}>Next</Button>
+          </div>
+        )}
       </div>
     </div>
   );
