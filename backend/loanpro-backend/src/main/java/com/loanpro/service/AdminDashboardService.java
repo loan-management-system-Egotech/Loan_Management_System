@@ -8,8 +8,10 @@ import com.loanpro.entity.LoanApplication;
 import com.loanpro.entity.User;
 import com.loanpro.enums.ApplicationStatus;
 import com.loanpro.enums.LoanStatus;
+import com.loanpro.entity.Payment;
 import com.loanpro.repository.LoanApplicationRepository;
 import com.loanpro.repository.LoanRepository;
+import com.loanpro.repository.PaymentRepository;
 import com.loanpro.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,8 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.management.ManagementFactory;
 import java.math.BigDecimal;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -32,6 +37,7 @@ public class AdminDashboardService {
     private final LoanRepository loanRepository;
     private final LoanApplicationRepository applicationRepository;
     private final UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
 
     public List<AdminStatsResponse> getStats() {
         List<AdminStatsResponse> stats = new ArrayList<>();
@@ -76,11 +82,42 @@ public class AdminDashboardService {
     }
 
     public Map<String, Object> getChartsData() {
-        // Simplified chart data
         Map<String, Object> data = new HashMap<>();
-        data.put("months", List.of("Jan", "Feb", "Mar", "Apr", "May", "Jun"));
-        data.put("disbursements", List.of(120, 150, 180, 200, 170, 220));
-        data.put("collections", List.of(100, 130, 160, 180, 150, 200));
+
+        // Last 6 months (oldest first), including the current month.
+        List<YearMonth> window = new ArrayList<>();
+        YearMonth current = YearMonth.now();
+        for (int i = 5; i >= 0; i--) {
+            window.add(current.minusMonths(i));
+        }
+
+        // Disbursements per month: sum of loan principals, bucketed by start date.
+        Map<YearMonth, BigDecimal> disbursedByMonth = new HashMap<>();
+        for (Loan loan : loanRepository.findAll()) {
+            if (loan.getStartDate() == null) continue;
+            YearMonth ym = YearMonth.from(loan.getStartDate());
+            disbursedByMonth.merge(ym, loan.getPrincipalAmount(), BigDecimal::add);
+        }
+
+        // Collections per month: sum of payment totals, bucketed by payment date.
+        Map<YearMonth, BigDecimal> collectedByMonth = new HashMap<>();
+        for (Payment payment : paymentRepository.findAll()) {
+            if (payment.getPaymentDate() == null) continue;
+            YearMonth ym = YearMonth.from(payment.getPaymentDate());
+            collectedByMonth.merge(ym, payment.getTotalAmount(), BigDecimal::add);
+        }
+
+        List<String> months = new ArrayList<>();
+        List<BigDecimal> disbursements = new ArrayList<>();
+        List<BigDecimal> collections = new ArrayList<>();
+        for (YearMonth ym : window) {
+            months.add(ym.getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH));
+            disbursements.add(disbursedByMonth.getOrDefault(ym, BigDecimal.ZERO));
+            collections.add(collectedByMonth.getOrDefault(ym, BigDecimal.ZERO));
+        }
+        data.put("months", months);
+        data.put("disbursements", disbursements);
+        data.put("collections", collections);
 
         // Real loan portfolio mix: active loans grouped by loan type
         Map<String, Long> portfolio = loanRepository.findAll().stream()
