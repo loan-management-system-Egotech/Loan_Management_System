@@ -25,3 +25,16 @@ replay_pid*
 
 # Local build helpers (Maven truststore for the Avast-MITM environment, etc.)
 .tmp-build/
+
+# Claude AI
+.claude/
+.claude_settings
+CLAUDE.md
+
+# Temp & build artifacts
+tmp/
+temp/
+build/
+dist/
+node_modules/
+graphify-out/
